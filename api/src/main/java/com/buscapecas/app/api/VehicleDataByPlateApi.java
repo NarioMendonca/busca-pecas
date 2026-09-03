@@ -23,12 +23,11 @@ public class VehicleDataByPlateApi {
         this.restClient = restClient;
     }
 
-    public Map<String, Object> searchByPlate(String placa) {
-        return restClient.get()
-            .uri(uriBuilder -> uriBuilder
-                .path("/api/v1/placas/numero")
-                .queryParam("numero", placa)
-                .build())
+    public Map<String, Object> searchByPlate(String plate) {
+        return restClient.post()
+            .uri("/api/v1/placas/numero")
+            .contentType(MediaType.APPLICATION_JSON)
+            .body(Map.of("placa", plate))
             .accept(MediaType.APPLICATION_JSON)
             .retrieve()
             .body(new ParameterizedTypeReference<Map<String, Object>>() {});

@@ -11,8 +11,8 @@ import com.buscapecas.app.api.VehicleDataByPlateApi.ApiProperties;
 @EnableConfigurationProperties(ApiProperties.class)
 public class ExternalApiConfig {
 
-    @Bean
-    public RestClient VehicleDataByPlateRestClient(ApiProperties properties) {
+    @Bean("placasApiRestClient")
+    public RestClient placasApiRestClient(ApiProperties properties) {
         return RestClient.builder()
             .baseUrl(properties.baseUrl())
             .defaultHeader("Authorization", "Bearer " + properties.token())
