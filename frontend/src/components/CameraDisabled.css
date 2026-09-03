@@ -1,0 +1,49 @@
+.camera-disabled {
+  border: 1.5px dashed #c3cedd;
+  background: #f8fafd;
+  border-radius: 14px;
+  padding: 36px 24px 30px;
+  text-align: center;
+  cursor: not-allowed;
+  user-select: none;
+  filter: saturate(0.4);
+  opacity: 0.85;
+}
+
+.camera-circle {
+  width: 76px;
+  height: 76px;
+  border-radius: 50%;
+  background: #e9eef5;
+  color: #7a8aa0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 18px;
+}
+
+.camera-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #6b7a90;
+  margin-bottom: 10px;
+}
+
+.camera-sub {
+  font-size: 14px;
+  line-height: 1.55;
+  color: #8a96ad;
+}
+
+.camera-badge {
+  display: inline-block;
+  margin-top: 16px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  color: #7a8aa0;
+  background: #e9eef5;
+  border-radius: 999px;
+  padding: 6px 14px;
+}

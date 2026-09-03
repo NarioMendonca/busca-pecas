@@ -1,0 +1,62 @@
+.plate-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 18px;
+}
+
+.plate-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+}
+
+.plate-input {
+  height: 52px;
+  border: 1.5px solid #d7dee9;
+  border-radius: 10px;
+  padding: 0 16px;
+  font-size: 19px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  text-align: center;
+  color: var(--text);
+  background: #fbfcfe;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.plate-input::placeholder {
+  color: #b6c0d1;
+  font-weight: 600;
+}
+
+.plate-input:hover {
+  border-color: #b9c6da;
+}
+
+.plate-input:focus {
+  border-color: var(--blue);
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(33, 102, 229, 0.15);
+}
+
+.plate-input.has-error {
+  border-color: #e5484d;
+}
+
+.plate-hint {
+  font-size: 13.5px;
+  color: var(--muted);
+  text-align: center;
+}
+
+.plate-error {
+  font-size: 13.5px;
+  color: #e5484d;
+  font-weight: 600;
+  text-align: center;
+}

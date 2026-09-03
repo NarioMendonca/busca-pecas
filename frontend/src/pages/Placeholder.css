@@ -1,0 +1,24 @@
+.placeholder-page {
+  animation: pageIn 0.25s ease;
+}
+
+.placeholder-card {
+  background: var(--card);
+  border: 1px solid #edf1f7;
+  border-radius: 18px;
+  box-shadow: 0 10px 30px rgba(16, 43, 85, 0.06);
+  padding: 48px 32px;
+  text-align: center;
+}
+
+.placeholder-strong {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+
+.placeholder-text {
+  font-size: 15px;
+  color: var(--muted);
+}
