@@ -1,0 +1,90 @@
+.plate-visual {
+  width: 100%;
+  max-width: 320px;
+  margin: 0 auto;
+  background: #fff;
+  border: 2px solid #22314b;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 6px 16px rgba(16, 43, 85, 0.1);
+}
+
+.plate-strip {
+  position: relative;
+  height: 30px;
+  background: #1e56c8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.plate-mercosul {
+  position: absolute;
+  left: 10px;
+  top: 4px;
+  font-size: 7px;
+  font-weight: 600;
+  letter-spacing: 0.8px;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.plate-country {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  color: #fff;
+}
+
+.plate-flag {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: inline-flex;
+  border-radius: 2px;
+  overflow: hidden;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.6);
+}
+
+.plate-body {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 18px 12px 22px;
+  background: #fff;
+}
+
+.plate-br {
+  position: absolute;
+  left: 10px;
+  bottom: 8px;
+  font-size: 13px;
+  font-weight: 800;
+  color: #22314b;
+  letter-spacing: 0.5px;
+}
+
+.plate-chars {
+  display: flex;
+  gap: 2px;
+}
+
+.plate-char {
+  font-size: 46px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  color: #39496a;
+  line-height: 1;
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+.plate-char.empty {
+  color: #c2c9d6;
+}
+
+@media (max-width: 480px) {
+  .plate-char {
+    font-size: 36px;
+  }
+}
