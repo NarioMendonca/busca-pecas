@@ -1,0 +1,332 @@
+.config-page {
+  animation: pageIn 0.25s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+@keyframes pageIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.config-page .page-sub {
+  margin-bottom: 4px;
+}
+
+/* ---------- Card ---------- */
+.settings-card {
+  background: var(--card);
+  border: 1px solid #edf1f7;
+  border-radius: 18px;
+  box-shadow: 0 10px 30px rgba(16, 43, 85, 0.06);
+  padding: 30px 32px 32px;
+}
+
+.settings-card-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  margin-bottom: 24px;
+}
+
+.settings-icon {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(33, 102, 229, 0.1);
+  color: var(--blue);
+}
+
+.settings-icon.danger {
+  background: rgba(229, 72, 77, 0.1);
+  color: #e5484d;
+}
+
+.settings-card-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 2px;
+}
+
+.settings-card-sub {
+  font-size: 14px;
+  color: var(--muted);
+}
+
+/* ---------- Campos de formulário ---------- */
+.settings-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 18px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.field label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.field input {
+  height: 48px;
+  border: 1.5px solid #d7dee9;
+  border-radius: 10px;
+  padding: 0 14px;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text);
+  background: #fbfcfe;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.field input::placeholder {
+  color: #b6c0d1;
+}
+
+.field input:hover {
+  border-color: #b9c6da;
+}
+
+.field input:focus {
+  border-color: var(--blue);
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(33, 102, 229, 0.15);
+}
+
+/* ---------- Lista com toggles ---------- */
+.settings-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.settings-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.settings-item:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.settings-item.column {
+  align-items: flex-start;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.item-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 3px;
+}
+
+.item-desc {
+  font-size: 13.5px;
+  color: var(--muted);
+  line-height: 1.4;
+}
+
+/* ---------- Tema (opções em botões) ---------- */
+.theme-options {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.theme-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 42px;
+  padding: 0 16px;
+  border-radius: 10px;
+  border: 1.5px solid #d7dee9;
+  background: #fbfcfe;
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.theme-btn:hover {
+  border-color: #b9c6da;
+  color: var(--text);
+}
+
+.theme-btn.active {
+  border-color: var(--blue);
+  background: rgba(33, 102, 229, 0.08);
+  color: var(--blue);
+}
+
+.settings-note {
+  margin-top: 16px;
+  font-size: 13px;
+  color: var(--muted-2);
+  background: #f7f9fc;
+  border: 1px dashed var(--border);
+  border-radius: 10px;
+  padding: 10px 14px;
+}
+
+/* ---------- Ações e feedback ---------- */
+.settings-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 24px;
+  flex-wrap: wrap;
+}
+
+.btn-save {
+  height: 46px;
+  padding: 0 22px;
+  border: none;
+  border-radius: 10px;
+  background: var(--blue);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 8px 18px rgba(33, 102, 229, 0.28);
+}
+
+.btn-save:hover {
+  background: var(--blue-hover);
+  box-shadow: 0 10px 22px rgba(33, 102, 229, 0.36);
+}
+
+.btn-save:active {
+  transform: scale(0.98);
+}
+
+.inline-feedback {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 10px;
+  padding: 10px 14px;
+}
+
+.inline-feedback.ok {
+  color: #1c7a3d;
+  background: #e9f7ee;
+  border: 1px solid #c8e8d2;
+}
+
+.inline-feedback.error {
+  color: #c02b30;
+  background: #fdecec;
+  border: 1px solid #f3c6c7;
+}
+
+/* ---------- Zona de risco ---------- */
+.settings-card.danger {
+  border-color: #f6dede;
+}
+
+.danger-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.danger-row:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.btn-outline {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 42px;
+  padding: 0 18px;
+  border-radius: 10px;
+  border: 1.5px solid #d7dee9;
+  background: #fff;
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+}
+
+.btn-outline:hover {
+  border-color: var(--blue);
+  color: var(--blue);
+}
+
+.btn-danger {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 42px;
+  padding: 0 18px;
+  border-radius: 10px;
+  border: 1.5px solid #f3c6c7;
+  background: #fff;
+  color: #e5484d;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+}
+
+.btn-danger:hover {
+  background: #fdecec;
+  border-color: #e5484d;
+}
+
+/* ---------- Responsivo ---------- */
+@media (max-width: 640px) {
+  .settings-card {
+    padding: 22px 18px 26px;
+  }
+
+  .settings-item,
+  .danger-row {
+    flex-wrap: wrap;
+  }
+
+  .btn-outline,
+  .btn-danger {
+    width: 100%;
+    justify-content: center;
+  }
+}
