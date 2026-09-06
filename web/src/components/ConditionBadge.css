@@ -1,0 +1,69 @@
+.condition-badge {
+  border-radius: 12px;
+  padding: 12px 16px;
+  min-width: 190px;
+}
+
+.condition-badge-title {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 14.5px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.condition-badge-desc {
+  font-size: 12.5px;
+  line-height: 1.4;
+}
+
+.tone-green {
+  background: #eef4f1;
+}
+.tone-green .condition-badge-title {
+  color: #1c7a3d;
+}
+.tone-green .condition-badge-desc {
+  color: #4d8a63;
+}
+
+.tone-amber {
+  background: #fdf6e8;
+}
+.tone-amber .condition-badge-title {
+  color: #b8790c;
+}
+.tone-amber .condition-badge-desc {
+  color: #a8813f;
+}
+
+.tone-orange {
+  background: #fdefe4;
+}
+.tone-orange .condition-badge-title {
+  color: #c2570c;
+}
+.tone-orange .condition-badge-desc {
+  color: #b06f3d;
+}
+
+.tone-red {
+  background: #fdecec;
+}
+.tone-red .condition-badge-title {
+  color: #c02b30;
+}
+.tone-red .condition-badge-desc {
+  color: #c45a5d;
+}
+
+.tone-gray {
+  background: #f1f3f7;
+}
+.tone-gray .condition-badge-title {
+  color: #5b6b85;
+}
+.tone-gray .condition-badge-desc {
+  color: var(--muted);
+}

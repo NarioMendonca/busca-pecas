@@ -1,26 +1,35 @@
 import { useState } from 'react';
-import { Camera, CheckCircle2, Keyboard, Search } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { Camera, Keyboard, Loader2, Search } from 'lucide-react';
 import Button from '../components/Button.jsx';
 import CameraDisabled from '../components/CameraDisabled.jsx';
 import MercosulPlate from '../components/MercosulPlate.jsx';
 import PlateInput from '../components/PlateInput.jsx';
 import SecurityBanner from '../components/SecurityBanner.jsx';
+import { buscarVeiculoPorPlaca } from '../services/api.js';
 import './BuscarVeiculo.css';
 
 export default function BuscarVeiculo() {
   const [placa, setPlaca] = useState('');
   const [error, setError] = useState('');
-  const [feedback, setFeedback] = useState('');
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
-  function handleBuscar() {
+  async function handleBuscar() {
     if (placa.length < 7) {
       setError('Digite os 7 caracteres da placa (ex.: ABC1D23).');
-      setFeedback('');
       return;
     }
     setError('');
-    // Somente simulação visual — integração com a API vem depois.
-    setFeedback(`Placa ${placa} válida. A consulta à API será ligada em breve.`);
+    setLoading(true);
+    try {
+      const veiculo = await buscarVeiculoPorPlaca(placa);
+      navigate(`/resultados/${placa}`, { state: { veiculo } });
+    } catch (err) {
+      setError(err.message || 'Não foi possível buscar o veículo. Tente novamente.');
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -49,18 +58,17 @@ export default function BuscarVeiculo() {
           <div className="col">
             <h2 className="col-title">Digite a placa do veículo</h2>
             <MercosulPlate value={placa} />
-            <PlateInput value={placa} onChange={(v) => { setPlaca(v); setError(''); setFeedback(''); }} error={error} />
+            <PlateInput value={placa} onChange={(v) => { setPlaca(v); setError(''); }} error={error} />
             <div className="col-action">
-              <Button onClick={handleBuscar}>
-                <Search size={19} strokeWidth={2.2} />
-                Buscar veículo
+              <Button onClick={handleBuscar} disabled={loading}>
+                {loading ? (
+                  <Loader2 size={19} strokeWidth={2.2} className="spin" />
+                ) : (
+                  <Search size={19} strokeWidth={2.2} />
+                )}
+                {loading ? 'Buscando...' : 'Buscar veículo'}
               </Button>
             </div>
-            {feedback && (
-              <p className="feedback-ok">
-                <CheckCircle2 size={16} /> {feedback}
-              </p>
-            )}
           </div>
 
           <div className="col-divider" aria-hidden="true">

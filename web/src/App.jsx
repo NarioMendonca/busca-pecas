@@ -7,6 +7,7 @@ import Favoritos from './pages/Favoritos.jsx';
 import Historico from './pages/Historico.jsx';
 import Pedidos from './pages/Pedidos.jsx';
 import Veiculos from './pages/Veiculos.jsx';
+import ResultadosBusca from './pages/ResultadosBusca';
 
 export default function App() {
   return (
@@ -21,6 +22,7 @@ export default function App() {
         <Route path="/configuracoes" element={<Configuracoes />} />
         <Route path="/ajuda" element={<Ajuda />} />
         <Route path="*" element={<Navigate to="/buscar-veiculo" replace />} />
+        <Route path="/resultados/:placa" element={<ResultadosBusca />} />
       </Route>
     </Routes>
   );
