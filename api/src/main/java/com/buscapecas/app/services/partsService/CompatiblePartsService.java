@@ -1,4 +1,4 @@
-package com.buscapecas.app.catalog.services;
+package com.buscapecas.app.services.partsService;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -9,10 +9,10 @@ import java.util.Objects;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.buscapecas.app.catalog.repositories.FitmentRepository;
-import com.buscapecas.app.catalog.repositories.VehicleRepository;
-import com.buscapecas.app.catalog.repositories.projections.CompatiblePart;
-import com.buscapecas.app.catalog.support.TextNormalizer;
+import com.buscapecas.app.repositories.FitmentRepository;
+import com.buscapecas.app.repositories.VehicleRepository;
+import com.buscapecas.app.repositories.projections.CompatiblePart;
+import com.buscapecas.app.utils.TextNormalizer;
 
 
 @Service

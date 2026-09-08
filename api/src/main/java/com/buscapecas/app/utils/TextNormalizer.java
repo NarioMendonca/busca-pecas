@@ -1,4 +1,4 @@
-package com.buscapecas.app.catalog.support;
+package com.buscapecas.app.utils;
 
 import java.text.Normalizer;
 import java.util.Locale;

@@ -1,4 +1,4 @@
-package com.buscapecas.app.catalog.controllers;
+package com.buscapecas.app.http.controllers;
 
 import java.util.List;
 
@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.buscapecas.app.catalog.services.CompatiblePartsService;
-import com.buscapecas.app.catalog.services.PartSearchCriteria;
-import com.buscapecas.app.catalog.services.PartSearchResult;
+import com.buscapecas.app.services.partsService.CompatiblePartsService;
+import com.buscapecas.app.services.partsService.PartSearchCriteria;
+import com.buscapecas.app.services.partsService.PartSearchResult;
 
 @RestController
 @RequestMapping("/parts")

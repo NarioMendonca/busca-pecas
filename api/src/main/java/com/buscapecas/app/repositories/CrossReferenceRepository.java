@@ -1,10 +1,10 @@
-package com.buscapecas.app.catalog.repositories;
+package com.buscapecas.app.repositories;
 
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.buscapecas.app.catalog.entities.CrossReference;
+import com.buscapecas.app.models.CrossReference;
 
 public interface CrossReferenceRepository extends JpaRepository<CrossReference, Long> {
 

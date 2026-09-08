@@ -1,4 +1,4 @@
-package com.buscapecas.app.catalog.entities;
+package com.buscapecas.app.models;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

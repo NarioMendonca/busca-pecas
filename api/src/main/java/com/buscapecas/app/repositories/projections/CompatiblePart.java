@@ -1,4 +1,4 @@
-package com.buscapecas.app.catalog.repositories.projections;
+package com.buscapecas.app.repositories.projections;
 
 public interface CompatiblePart {
 

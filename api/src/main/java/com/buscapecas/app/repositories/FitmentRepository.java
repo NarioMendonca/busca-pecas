@@ -1,4 +1,4 @@
-package com.buscapecas.app.catalog.repositories;
+package com.buscapecas.app.repositories;
 
 import java.util.List;
 
@@ -7,8 +7,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import com.buscapecas.app.catalog.entities.Fitment;
-import com.buscapecas.app.catalog.repositories.projections.CompatiblePart;
+import com.buscapecas.app.models.Fitment;
+import com.buscapecas.app.repositories.projections.CompatiblePart;
 
 public interface FitmentRepository extends JpaRepository<Fitment, Long> {
 

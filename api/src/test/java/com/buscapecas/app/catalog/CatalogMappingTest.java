@@ -6,11 +6,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.buscapecas.app.catalog.repositories.CrossReferenceRepository;
-import com.buscapecas.app.catalog.repositories.FitmentRepository;
-import com.buscapecas.app.catalog.repositories.PartRepository;
-import com.buscapecas.app.catalog.repositories.SpecificationRepository;
-import com.buscapecas.app.catalog.repositories.VehicleRepository;
+import com.buscapecas.app.repositories.CrossReferenceRepository;
+import com.buscapecas.app.repositories.FitmentRepository;
+import com.buscapecas.app.repositories.PartRepository;
+import com.buscapecas.app.repositories.SpecificationRepository;
+import com.buscapecas.app.repositories.VehicleRepository;
 
 /**
  * Boots the context without a database, purely so Hibernate builds the entity

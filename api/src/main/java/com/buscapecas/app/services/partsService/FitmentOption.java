@@ -1,4 +1,4 @@
-package com.buscapecas.app.catalog.services;
+package com.buscapecas.app.services.partsService;
 
 public record FitmentOption(
     String trim,
