@@ -15,7 +15,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Component
 public class GeminiApi {
 
-    private static final String API_KEY = "chave da api";
+    private static final String API_KEY = "AQ.Ab8RN6KRzawAMD22I1XewSUJfmJwExnY_jLMoM36fqKZHomH_g";
 
     private static final String MODEL = "gemini-3.6-flash";
 
