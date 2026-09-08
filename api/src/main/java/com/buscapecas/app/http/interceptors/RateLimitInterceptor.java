@@ -23,6 +23,10 @@ public class RateLimitInterceptor implements HandlerInterceptor {
 
         String apiKey = request.getHeader("X-Api-Key");
 
+        if (apiKey == null) {
+            return true;
+        }
+
         rateLimitService.verificar(apiKey);
 
         return true;
