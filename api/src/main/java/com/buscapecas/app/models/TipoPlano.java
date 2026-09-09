@@ -7,11 +7,11 @@ public enum TipoPlano {
 
     private final int limiteMensal;
 
-    TipoPlano(int limiteDiario) {
-        this.limiteMensal = limiteDiario;
+    TipoPlano(int limiteMensal) {
+        this.limiteMensal = limiteMensal;
     }
 
-    public int getLimiteDiario() {
+    public int getLimiteMensal() {
         return limiteMensal;
     }
 }

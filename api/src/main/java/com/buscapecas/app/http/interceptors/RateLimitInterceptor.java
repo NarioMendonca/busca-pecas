@@ -1,10 +1,14 @@
 package com.buscapecas.app.http.interceptors;
 
-import com.buscapecas.app.services.RateLimitService;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
+
+import com.buscapecas.app.services.AuthService;
+import com.buscapecas.app.services.RateLimitService;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 @Component
 public class RateLimitInterceptor implements HandlerInterceptor {
@@ -21,13 +25,21 @@ public class RateLimitInterceptor implements HandlerInterceptor {
             HttpServletResponse response,
             Object handler) {
 
-        String apiKey = request.getHeader("X-Api-Key");
+        HttpSession session = request.getSession(true);
 
-        if (apiKey == null) {
-            return true;
+        Object usuarioId =
+                session.getAttribute(AuthService.SESSION_USUARIO_ID);
+
+        if (usuarioId instanceof Long) {
+
+            rateLimitService.verificarPorUsuarioId(
+                    (Long) usuarioId
+            );
+
+        } else {
+
+            rateLimitService.verificarAnonimo(session);
         }
-
-        rateLimitService.verificar(apiKey);
 
         return true;
     }
