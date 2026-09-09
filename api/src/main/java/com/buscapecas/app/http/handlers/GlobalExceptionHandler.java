@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.buscapecas.app.exceptions.ApiKeyInvalidaException;
+import com.buscapecas.app.exceptions.CredenciaisInvalidasException;
+import com.buscapecas.app.exceptions.NaoAutenticadoException;
 import com.buscapecas.app.exceptions.RateLimitExcedidoException;
 
 @RestControllerAdvice
@@ -17,6 +19,22 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     public Map<String, String> handleApiKeyInvalida(
             ApiKeyInvalidaException exception) {
+
+        return Map.of("message", exception.getMessage());
+    }
+
+    @ExceptionHandler(CredenciaisInvalidasException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public Map<String, String> handleCredenciaisInvalidas(
+            CredenciaisInvalidasException exception) {
+
+        return Map.of("message", exception.getMessage());
+    }
+
+    @ExceptionHandler(NaoAutenticadoException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public Map<String, String> handleNaoAutenticado(
+            NaoAutenticadoException exception) {
 
         return Map.of("message", exception.getMessage());
     }
