@@ -36,12 +36,6 @@ public class RateLimitService {
         this.usuarioRepository = usuarioRepository;
     }
 
-    /**
-     * Verifica o limite de um usuário autenticado.
-     *
-     * BASICO = 500 requisições/mês
-     * PREMIUM = 5000 requisições/mês
-     */
     @Transactional
     public void verificarPorUsuarioId(Long usuarioId) {
 
@@ -57,14 +51,6 @@ public class RateLimitService {
         usuarioRepository.save(usuario);
     }
 
-    /**
-     * Verifica o limite de quem não está logado: 10 requisições por mês.
-     *
-     * A contagem é por IP, não por sessão HTTP. Sessão dependia do cliente
-     * devolver o cookie JSESSIONID — quem chamasse via curl/Postman sem
-     * guardar cookie ganhava uma sessão nova a cada request e nunca batia no
-     * limite.
-     */
     public void verificarAnonimo(String identificador) {
 
         String mesAtual = YearMonth.now().toString();
@@ -90,13 +76,6 @@ public class RateLimitService {
         }
     }
 
-    /**
-     * Rate limit para consumidores externos que utilizam API Key.
-     *
-     * Mantido separado da autenticação por sessão. Hoje nenhum interceptor
-     * chama este método — o RateLimitInterceptor usa sessão/IP. Só passa a
-     * valer quando a API Key for exposta ao usuário e lida de um header.
-     */
     @Transactional
     public void verificarPorApiKey(String apiKey) {
 

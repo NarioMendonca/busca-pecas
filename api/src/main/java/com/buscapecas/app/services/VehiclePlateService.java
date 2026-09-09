@@ -44,11 +44,6 @@ public class VehiclePlateService {
         return result;
     }
 
-    /**
-     * A descrição gerada por IA é um extra. Se o Gemini estiver sem chave ou
-     * fora do ar, a consulta da placa continua respondendo normalmente — antes,
-     * uma falha aqui derrubava a requisição inteira com 500.
-     */
     private String humanizarOuNulo(Map<String, Object> vehicleData) {
 
         if (!geminiApi.isConfigured()) {
