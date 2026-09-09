@@ -25,22 +25,33 @@ public class RateLimitInterceptor implements HandlerInterceptor {
             HttpServletResponse response,
             Object handler) {
 
-        HttpSession session = request.getSession(true);
+        // getSession(false): não cria sessão para quem não fez login.
+        // O contador de anônimo é por IP, então sessão só serve para saber
+        // se existe alguém logado.
+        HttpSession session = request.getSession(false);
 
-        Object usuarioId =
-                session.getAttribute(AuthService.SESSION_USUARIO_ID);
+        Object usuarioId = (session == null)
+                ? null
+                : session.getAttribute(AuthService.SESSION_USUARIO_ID);
 
-        if (usuarioId instanceof Long) {
-
-            rateLimitService.verificarPorUsuarioId(
-                    (Long) usuarioId
-            );
-
+        if (usuarioId instanceof Long id) {
+            rateLimitService.verificarPorUsuarioId(id);
         } else {
-
-            rateLimitService.verificarAnonimo(session);
+            rateLimitService.verificarAnonimo(identificarCliente(request));
         }
 
         return true;
+    }
+
+    private String identificarCliente(HttpServletRequest request) {
+
+        String encaminhado = request.getHeader("X-Forwarded-For");
+
+        if (encaminhado != null && !encaminhado.isBlank()) {
+            // O header pode trazer uma cadeia "cliente, proxy1, proxy2".
+            return encaminhado.split(",")[0].trim();
+        }
+
+        return request.getRemoteAddr();
     }
 }

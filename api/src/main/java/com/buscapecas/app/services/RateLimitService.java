@@ -1,7 +1,9 @@
 package com.buscapecas.app.services;
 
 import java.time.YearMonth;
+import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,20 +14,23 @@ import com.buscapecas.app.exceptions.RateLimitExcedidoException;
 import com.buscapecas.app.models.Usuario;
 import com.buscapecas.app.repositories.UsuarioRepository;
 
-import jakarta.servlet.http.HttpSession;
-
 @Service
 public class RateLimitService {
 
     private static final int LIMITE_ANONIMO_MENSAL = 10;
 
-    private static final String SESSION_MES_ANONIMO =
-            "mesRateLimitAnonimo";
-
-    private static final String SESSION_REQUISICOES_ANONIMAS =
-            "requisicoesAnonimas";
-
     private final UsuarioRepository usuarioRepository;
+
+    /**
+     * Contador de anônimos, por identificador (hoje o IP), em memória.
+     * Zera quando a aplicação reinicia — aceitável, já que é só um limite de
+     * cortesia antes do cadastro.
+     */
+    private final Map<String, ContadorAnonimo> contadoresAnonimos =
+            new ConcurrentHashMap<>();
+
+    private record ContadorAnonimo(String mes, int requisicoes) {
+    }
 
     public RateLimitService(UsuarioRepository usuarioRepository) {
         this.usuarioRepository = usuarioRepository;
@@ -53,54 +58,44 @@ public class RateLimitService {
     }
 
     /**
-     * Verifica o limite de usuários anônimos.
+     * Verifica o limite de quem não está logado: 10 requisições por mês.
      *
-     * Usuários sem conta possuem 10 requisições
-     * gratuitas por mês.
-     *
-     * O contador fica armazenado na sessão HTTP.
+     * A contagem é por IP, não por sessão HTTP. Sessão dependia do cliente
+     * devolver o cookie JSESSIONID — quem chamasse via curl/Postman sem
+     * guardar cookie ganhava uma sessão nova a cada request e nunca batia no
+     * limite.
      */
-    public void verificarAnonimo(HttpSession session) {
+    public void verificarAnonimo(String identificador) {
 
         String mesAtual = YearMonth.now().toString();
 
-        String mesDaSessao =
-                (String) session.getAttribute(SESSION_MES_ANONIMO);
+        boolean[] excedeu = { false };
 
-        Integer requisicoes =
-                (Integer) session.getAttribute(SESSION_REQUISICOES_ANONIMAS);
+        contadoresAnonimos.compute(identificador, (chave, atual) -> {
 
-        if (mesDaSessao == null ||
-                !mesAtual.equals(mesDaSessao)) {
+            int usadas = (atual == null || !mesAtual.equals(atual.mes()))
+                    ? 0
+                    : atual.requisicoes();
 
-            requisicoes = 0;
+            if (usadas >= LIMITE_ANONIMO_MENSAL) {
+                excedeu[0] = true;
+                return new ContadorAnonimo(mesAtual, usadas);
+            }
 
-            session.setAttribute(
-                    SESSION_MES_ANONIMO,
-                    mesAtual
-            );
-        }
+            return new ContadorAnonimo(mesAtual, usadas + 1);
+        });
 
-        if (requisicoes == null) {
-            requisicoes = 0;
-        }
-
-        if (requisicoes >= LIMITE_ANONIMO_MENSAL) {
+        if (excedeu[0]) {
             throw new RateLimitExcedidoException();
         }
-
-        requisicoes++;
-
-        session.setAttribute(
-                SESSION_REQUISICOES_ANONIMAS,
-                requisicoes
-        );
     }
 
     /**
      * Rate limit para consumidores externos que utilizam API Key.
      *
-     * Mantido separado da autenticação por sessão.
+     * Mantido separado da autenticação por sessão. Hoje nenhum interceptor
+     * chama este método — o RateLimitInterceptor usa sessão/IP. Só passa a
+     * valer quando a API Key for exposta ao usuário e lida de um header.
      */
     @Transactional
     public void verificarPorApiKey(String apiKey) {

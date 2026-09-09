@@ -5,6 +5,8 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.regex.Pattern;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.buscapecas.app.api.GeminiApi;
@@ -12,6 +14,8 @@ import com.buscapecas.app.api.VehicleDataByPlateApi;
 
 @Service
 public class VehiclePlateService {
+
+    private static final Logger log = LoggerFactory.getLogger(VehiclePlateService.class);
 
     private final VehicleDataByPlateApi vehicleDataByPlateApi;
     private final GeminiApi geminiApi;
@@ -34,10 +38,28 @@ public class VehiclePlateService {
         }
 
         Map<String, Object> vehicleData = vehicleDataByPlateApi.searchByPlate(carPlateFormated);
-        String friendlyDescription = geminiApi.humanizeVehicleData(vehicleData);
 
         Map<String, Object> result = new LinkedHashMap<>(vehicleData);
-        result.put("friendlyDescription", friendlyDescription);
+        result.put("friendlyDescription", humanizarOuNulo(vehicleData));
         return result;
+    }
+
+    /**
+     * A descrição gerada por IA é um extra. Se o Gemini estiver sem chave ou
+     * fora do ar, a consulta da placa continua respondendo normalmente — antes,
+     * uma falha aqui derrubava a requisição inteira com 500.
+     */
+    private String humanizarOuNulo(Map<String, Object> vehicleData) {
+
+        if (!geminiApi.isConfigured()) {
+            return null;
+        }
+
+        try {
+            return geminiApi.humanizeVehicleData(vehicleData);
+        } catch (RuntimeException e) {
+            log.warn("Não foi possível gerar a descrição com o Gemini: {}", e.getMessage());
+            return null;
+        }
     }
 }

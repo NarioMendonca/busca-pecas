@@ -3,30 +3,39 @@ package com.buscapecas.app.api;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
 
 
 @Component
 public class GeminiApi {
 
-    private static final String API_KEY = "AQ.Ab8RN6KRzawAMD22I1XewSUJfmJwExnY_jLMoM36fqKZHomH_g";
-
-    private static final String MODEL = "gemini-3.6-flash";
-
+    private final String apiKey;
+    private final String model;
     private final RestClient restClient;
     private final ObjectMapper objectMapper;
 
-    public GeminiApi() {
+    public GeminiApi(
+        @Value("${gemini.api-key:}") String apiKey,
+        @Value("${gemini.model:gemini-3.6-flash}") String model
+    ) {
+        this.apiKey = apiKey;
+        this.model = model;
         this.restClient = RestClient.builder()
             .baseUrl("https://generativelanguage.googleapis.com/v1beta")
             .build();
         this.objectMapper = new ObjectMapper();
+    }
+
+    /** Sem chave configurada a humanização fica desligada, em vez de quebrar a requisição. */
+    public boolean isConfigured() {
+        return apiKey != null && !apiKey.isBlank();
     }
 
     public String humanizeVehicleData(Map<String, Object> rawData) {
@@ -43,8 +52,8 @@ public class GeminiApi {
         Map<String, Object> response = restClient.post()
             .uri(uriBuilder -> uriBuilder
                 .path("/models/{model}:generateContent")
-                .queryParam("key", API_KEY)
-                .build(MODEL))
+                .queryParam("key", apiKey)
+                .build(model))
             .contentType(MediaType.APPLICATION_JSON)
             .body(requestBody)
             .retrieve()
@@ -87,7 +96,7 @@ public class GeminiApi {
     private String toJson(Map<String, Object> data) {
         try {
             return objectMapper.writeValueAsString(data);
-        } catch (JsonProcessingException e) {
+        } catch (JacksonException e) {
             throw new IllegalStateException("Could not convert vehicle data to JSON.", e);
         }
     }

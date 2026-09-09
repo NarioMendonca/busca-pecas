@@ -22,16 +22,23 @@ public class WebConfig implements WebMvcConfigurer {
     }
 
     @Override
-public void addInterceptors(InterceptorRegistry registry) {
+    public void addInterceptors(InterceptorRegistry registry) {
 
-    registry.addInterceptor(authInterceptor)
-            .addPathPatterns(
-                    "/perfil/**",
-                    "/admin/**"
-            );
+        // Exige login. Hoje nenhuma rota real cai aqui — /perfil e /admin ainda
+        // não existem. Registrado para quando existirem.
+        registry.addInterceptor(authInterceptor)
+                .addPathPatterns(
+                        "/perfil/**",
+                        "/admin/**"
+                );
 
-    registry.addInterceptor(rateLimitInterceptor)
-            .addPathPatterns("/veiculos/**")
-            .excludePathPatterns("/mock/veiculos/**");
-}
+        // Rate limit nas rotas de consulta: placas e peças.
+        // /mock/veiculos/** não precisa de exclusão: não casa com nenhum
+        // dos padrões abaixo.
+        registry.addInterceptor(rateLimitInterceptor)
+                .addPathPatterns(
+                        "/veiculos/**",
+                        "/parts/**"
+                );
+    }
 }
