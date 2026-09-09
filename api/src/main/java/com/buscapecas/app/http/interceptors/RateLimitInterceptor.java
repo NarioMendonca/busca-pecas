@@ -1,10 +1,14 @@
 package com.buscapecas.app.http.interceptors;
 
-import com.buscapecas.app.services.RateLimitService;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
+
+import com.buscapecas.app.services.AuthService;
+import com.buscapecas.app.services.RateLimitService;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 @Component
 public class RateLimitInterceptor implements HandlerInterceptor {
@@ -21,14 +25,33 @@ public class RateLimitInterceptor implements HandlerInterceptor {
             HttpServletResponse response,
             Object handler) {
 
-        String apiKey = request.getHeader("X-Api-Key");
+        // getSession(false): não cria sessão para quem não fez login.
+        // O contador de anônimo é por IP, então sessão só serve para saber
+        // se existe alguém logado.
+        HttpSession session = request.getSession(false);
 
-        if (apiKey == null) {
-            return true;
+        Object usuarioId = (session == null)
+                ? null
+                : session.getAttribute(AuthService.SESSION_USUARIO_ID);
+
+        if (usuarioId instanceof Long id) {
+            rateLimitService.verificarPorUsuarioId(id);
+        } else {
+            rateLimitService.verificarAnonimo(identificarCliente(request));
         }
 
-        rateLimitService.verificar(apiKey);
-
         return true;
+    }
+
+    private String identificarCliente(HttpServletRequest request) {
+
+        String encaminhado = request.getHeader("X-Forwarded-For");
+
+        if (encaminhado != null && !encaminhado.isBlank()) {
+            // O header pode trazer uma cadeia "cliente, proxy1, proxy2".
+            return encaminhado.split(",")[0].trim();
+        }
+
+        return request.getRemoteAddr();
     }
 }

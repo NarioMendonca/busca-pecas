@@ -28,6 +28,9 @@ public class Usuario {
     @Column(unique = true, nullable = false)
     private String email;
 
+    @Column(nullable = false)
+    private String senha;
+
     @Column(nullable = false, unique = true)
     private UUID apiKey;
 
@@ -35,8 +38,8 @@ public class Usuario {
     @Column(nullable = false)
     private TipoPlano plano;
 
-    @Column(nullable = false)
-    private int requisicoesFeitasHoje;
+    @Column(name = "requisicoes_feitas_no_mes", nullable = false)
+    private int requisicoesFeitasNoMes;
 
     @Column(nullable = false)
     private LocalDate dataUltimoReset;
@@ -47,6 +50,7 @@ public class Usuario {
 
     @PrePersist
     public void antesDeSalvar() {
+
         if (apiKey == null) {
             apiKey = UUID.randomUUID();
         }
@@ -56,7 +60,7 @@ public class Usuario {
         }
 
         if (dataUltimoReset == null) {
-            dataUltimoReset = LocalDate.now();
+            dataUltimoReset = LocalDate.now().withDayOfMonth(1);
         }
 
         createdAt = LocalDateTime.now();
@@ -70,31 +74,36 @@ public class Usuario {
 
     public boolean podeFazerRequisicao() {
 
-        verificarResetDiario();
+        verificarResetMensal();
 
-        return requisicoesFeitasHoje < plano.getLimiteDiario();
+        return requisicoesFeitasNoMes < plano.getLimiteMensal();
     }
 
     public void registrarRequisicao() {
 
-        verificarResetDiario();
+        verificarResetMensal();
 
-        requisicoesFeitasHoje++;
+        requisicoesFeitasNoMes++;
     }
 
-    private void verificarResetDiario() {
+    private void verificarResetMensal() {
 
-        if (!LocalDate.now().equals(dataUltimoReset)) {
-            requisicoesFeitasHoje = 0;
-            dataUltimoReset = LocalDate.now();
+        LocalDate inicioDoMesAtual =
+                LocalDate.now().withDayOfMonth(1);
+
+        if (dataUltimoReset == null ||
+                dataUltimoReset.isBefore(inicioDoMesAtual)) {
+
+            requisicoesFeitasNoMes = 0;
+            dataUltimoReset = inicioDoMesAtual;
         }
     }
 
     public int getRequisicoesRestantes() {
 
-        verificarResetDiario();
+        verificarResetMensal();
 
-        return plano.getLimiteDiario() - requisicoesFeitasHoje;
+        return plano.getLimiteMensal() - requisicoesFeitasNoMes;
     }
 
     public Long getId() {
@@ -121,6 +130,14 @@ public class Usuario {
         this.email = email;
     }
 
+    public String getSenha() {
+        return senha;
+    }
+
+    public void setSenha(String senha) {
+        this.senha = senha;
+    }
+
     public UUID getApiKey() {
         return apiKey;
     }
@@ -137,12 +154,12 @@ public class Usuario {
         this.plano = plano;
     }
 
-    public int getRequisicoesFeitasHoje() {
-        return requisicoesFeitasHoje;
+    public int getRequisicoesFeitasNoMes() {
+        return requisicoesFeitasNoMes;
     }
 
-    public void setRequisicoesFeitasHoje(int requisicoesFeitasHoje) {
-        this.requisicoesFeitasHoje = requisicoesFeitasHoje;
+    public void setRequisicoesFeitasNoMes(int requisicoesFeitasNoMes) {
+        this.requisicoesFeitasNoMes = requisicoesFeitasNoMes;
     }
 
     public LocalDate getDataUltimoReset() {
